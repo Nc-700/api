@@ -2,15 +2,14 @@ import con from "./connection.js"
 
 
 export async function inserirParcipante(participante) {
-    const comando = `
-        insert into tb_Participante (nome,email,telefone,id_Atividades,id_Usuario)
-            values (?,?,?,?,?)
-    `;
+    const comando = `INSERT INTO tb_Participante (nome, email,telefone, id_Atividades, id_Usuario) 
+VALUES (?, ?, ?, ?, ?);
+`;
 
-    let resposta = await con.query(comando, [participante.nome, participante.email, participante.id_Atividades, participante.id_Usuario])
-    let info = resposta[0];
 
-    return info.insertId;
+    let resposta = await con.query(comando, [participante.nome, participante.email,participante.telefone, participante.id_Atividades, participante.id_Usuario])
+ let info = resposta[0];
+  return info.insertId;
 }
 
 export async function consultarParticipante(participante) {
@@ -23,10 +22,10 @@ export async function consultarParticipante(participante) {
                 id_Usuario AS id_usuario    
 
     from tb_participante
-    where id_participante 
+    where id_participante
     `;
 
-    let resposta = await con.query(comando, (participante));
+    let resposta = await con.query(comando, [participante]);
     let registro = resposta[0];
 
     return registro;
@@ -44,7 +43,7 @@ export async function consultarParticipantePorId(Id) {
     where id_participante = ?
     `;
 
-    let resposta = await con.query(comando, (Id));
+    let resposta = await con.query(comando, [Id]);
     let registro = resposta[0];
 
     return registro;
@@ -61,7 +60,7 @@ export async function alterarParticipante(id, participante) {
             WHERE id_participante = ?   
     `;
 
-    let resposta = await con.query(comando,[participante.nome, participante.email, participante.telefone,participante.id_Atividades,participante.id_Usuario ,id])
+    let resposta = await con.query(comando, [participante.nome, participante.email, participante.telefone, participante.id_Atividades, participante.id_Usuario, id])
     let info = resposta[0];
 
     return info.affectedRows;

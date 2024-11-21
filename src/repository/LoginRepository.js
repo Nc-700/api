@@ -3,11 +3,11 @@ import con from "./connection.js"
 
 export async function inserirUsuario(usuario){
     const comando = `
-        insert into ativadades (nome,email,senha)
-            values (?,?,?)
+        insert into Usuario (nome, email, senha)
+            values (?,?, ?)
     `;
 
-    let resposta = await con.query(comando, [usuario.nome,usuario.email,usuario.senha])
+    let resposta = await con.query(comando, [usuario.nome, usuario.email, usuario.senha])
     let info = resposta[0];
 
     return info.insertId;
@@ -16,14 +16,13 @@ export async function inserirUsuario(usuario){
 export async function consultarUsuario (usuario){
     const comando = `
     select id_usuario       id,
-                nome        nome,
                 email       email,
-                senha       senha,
-    from usuario
-    where id_usuario = ?
+                senha       senha
+    from Usuario
+    where id_usuario 
     `;
 
-    let resposta = await con.query(comando(usuario));
+    let resposta = await con.query(comando,(usuario));
     let registro = resposta[0];
 
     return registro;
@@ -54,7 +53,7 @@ export async function alterarUsuario(id,usuario){
             where id_usuario  
     `;
 
-    let resposta = await con.query(comnando[usuario.nome,usuario.email,usuario.senha,id])
+    let resposta = await con.query(comnando,[usuario.nome,usuario.email,usuario.senha,id])
     let info = resposta[0]
 
     return info.affectedRows;

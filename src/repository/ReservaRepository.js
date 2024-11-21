@@ -3,11 +3,11 @@ import con from "./connection.js"
 
 export async function inserirReserva(reserva) {
     const comando = `
-        insert into tb_Reserva (id_Atividades,id_Participantes,data_reserva,stats)
+        insert into tb_Reserva (data_reserva,id_Atividades,id_Participantes,stats)
             values (?,?,?,?)
     `;
 
-    let resposta = await con.query(comando, [reserva.id_Atividades, reserva.id_participante, reserva.data_reserva, reserva.stats,])
+    let resposta = await con.query(comando, [reserva.data_reserva, reserva.id_Atividades, reserva.id_participante, reserva.stats,])
     let info = resposta[0];
 
     return info.insertId;
@@ -16,9 +16,9 @@ export async function inserirReserva(reserva) {
 export async function consultarReserva(reserva) {
     const comando = `
     select id_reserva    id,
-                id_atividades    atividade,
-                id_participantes participante,
                 data_reserva    data_reserva,
+                id_atividades    atividade,
+                id_participantes participante,     
                 stats           stats
     from tb_Reserva
     where id_reserva 

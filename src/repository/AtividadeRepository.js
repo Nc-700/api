@@ -2,8 +2,8 @@ import con from "./connection.js";
 
 export async function inserirAtividade(Atividades) {
     const comando = `
-        INSERT INTO tb_Atividades (nome, descricao, data, hora_inicio, hora_fim, id_local, id_usuario)
-        VALUES (?, ?, ?, ?, ?, ?, ? )
+        INSERT INTO tb_Atividades (nome, descricao, data, hora_inicio, hora_fim,baladinha,qtd_rec, id_local, id_usuario)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ? , ? )
     `;
 
     let resposta = await con.query(comando, [
@@ -12,6 +12,8 @@ export async function inserirAtividade(Atividades) {
         Atividades.data,
         Atividades.hora_inicio,
         Atividades.hora_fim,
+        Atividades.baladinha,
+        Atividades.qtd_rec,
         Atividades.id_local,
         Atividades.id_usuario
     ]);
@@ -28,6 +30,8 @@ export async function consultarAtividade(idAtividades) {
                data,
                hora_inicio AS horaInicio,
                hora_fim AS horaFim,
+               baladinha    baladinha,
+               qtd_rec      qtd_rec,
                id_local AS local,
                id_usuario AS usuario 
         FROM tb_Atividades
@@ -42,16 +46,18 @@ export async function consultarAtividade(idAtividades) {
 
 export async function consultarAtividadePorId(id) {
     const comando = `
-        SELECT id_Atividades AS id,
+       SELECT id_Atividades AS id,
                nome,
                descricao,
                data,
                hora_inicio AS horaInicio,
                hora_fim AS horaFim,
+               baladinha    baladinha,
+               qtd_rec      qtd_rec,
                id_local AS local,
                id_usuario AS usuario 
         FROM tb_Atividades
-        WHERE id_atividadeS = ?
+        WHERE id_Atividades = ?
     `;
 
     let resposta = await con.query(comando, [id]);
@@ -68,6 +74,8 @@ export async function alterarAtividade(id, Atividades) {
             data = ?,
             hora_inicio = ?,
             hora_fim = ?,
+            baladinha = ?,
+            qtd_rec = ?,
             id_local = ?,
             id_usuario = ?
         WHERE id_Atividades = ?
@@ -79,6 +87,8 @@ export async function alterarAtividade(id, Atividades) {
         Atividades.data,
         Atividades.hora_inicio,
         Atividades.hora_fim,
+        Atividades.baladinha,
+        Atividades.qtd_rec,
         Atividades.id_local,
         Atividades.id_local,
         id
