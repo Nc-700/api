@@ -19,8 +19,8 @@ export async function consultarParticipante(participante) {
                 nome        nome,
                 email       email,
                 telefone    telefone,
-                id_Atividades AS atividade,
-                id_Usuario AS usuario    
+                id_Atividades AS id_atividade,
+                id_Usuario AS id_usuario    
 
     from tb_participante
     where id_participante 
@@ -52,13 +52,13 @@ export async function consultarParticipantePorId(Id) {
 
 export async function alterarParticipante(id, participante) {
     const comando = `
-        uptade tb_Participante
-            set nome = ?,
+        UPDATE tb_Participante
+            SET nome = ?,
                 email = ?,
-                telefone = ?
+                telefone = ?,
                 id_Atividades = ?,
                 id_Usuario = ?
-            where id_participante = ?   
+            WHERE id_participante = ?   
     `;
 
     let resposta = await con.query(comando,[participante.nome, participante.email, participante.telefone,participante.id_Atividades,participante.id_Usuario ,id])
@@ -69,7 +69,7 @@ export async function alterarParticipante(id, participante) {
 
 export async function removerParticipante(id) {
     const comando = `
-        delete from participante
+        delete from tb_Participante
         where id_participante = ?    
     `
     let resposta = await con.query(comando, [id]);

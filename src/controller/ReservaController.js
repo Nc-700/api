@@ -1,5 +1,23 @@
+import * as db from '../repository/ReservaRepository.js'
+
 import { Router } from "express";
 const endpoints = Router();
+
+endpoints.get('/reserva', async (req, resp) => {
+    try {
+        let id = req.params.id; 
+        let reserva = await db.consultarReserva(id); 
+        
+        if (reserva) {
+            resp.send(reserva); 
+        } else {
+            resp.status(404).send({ erro: 'Reserva não encontrada' });
+             
+        }
+    } catch (err) {
+        resp.status(400).send({ erro: err.message }); 
+    }
+});
 
 endpoints.get('/reserva/:id', async (req, resp) => {
     try {
@@ -17,20 +35,21 @@ endpoints.get('/reserva/:id', async (req, resp) => {
     }
 });
 
-endpoints.post('/reserva/', async (req, resp) => {
+endpoints.post('/reserva', async (req, resp) => {
     try {
-        let novaReserva = req.body; 
-
-        if (!novaReserva.participanteId || !novaReserva.localId || !novaReserva.data) {
-            return resp.status(400).send({ erro: 'Campos participanteId, localId e data são obrigatórios' });
-        }
-
-        let id = await db.inserirReserva(novaReserva); 
-        resp.status(201).send({ novoId: id });
-    } catch (err) {
-        resp.status(400).send({ erro: 'Erro ao inserir reserva: ' + err.message }); 
+        
+        let reserva = req.body;
+        let id = await db.inserirReserva(reserva);
+        resp.send({
+            novoId: id
+        })
     }
-});
+    catch (err) {
+        resp.status(400).send({
+            erro: err.message
+        })
+    }
+})
 
 endpoints.put('/reserva/:id', async (req, resp) => {
     try {
