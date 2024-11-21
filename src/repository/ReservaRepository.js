@@ -7,7 +7,7 @@ export async function inserirReserva(reserva) {
             values (?,?,?,?)
     `;
 
-    let resposta = await con.query(comando, [reserva.id_Atividades,reserva.id_participante, reserva.data_reserva, reserva.stats,])
+    let resposta = await con.query(comando, [reserva.id_Atividades, reserva.id_participante, reserva.data_reserva, reserva.stats,])
     let info = resposta[0];
 
     return info.insertId;
@@ -48,16 +48,16 @@ export async function consultarReservaPorId(Id) {
 }
 
 export async function alterarReserva(id, reserva) {
-    const comnando = `
-        uptade reserva
-            set id_participante = ?,
-                id_atividade = ?,
+    const comando = `
+        UPDATE tb_Reserva
+            SET id_Atividades = ?,
+                id_Participantes = ?,
                 data_reserva = ?,
-                stats = ?,
-            where id_reserva    
+                stats = ?
+            WHERE id_reserva = ?   
     `;
 
-    let resposta = await con.query(comnando[reserva.id_participante, reserva.id_atividade, reserva.data_reserva, reserva.stats, id])
+    let resposta = await con.query(comando, [reserva.id_atividade, reserva.id_participante, reserva.data_reserva, reserva.stats, id])
     let info = resposta[0];
 
     return info.affectedRows;
@@ -65,7 +65,7 @@ export async function alterarReserva(id, reserva) {
 
 export async function removerReserva(id) {
     const comando = `
-        delete from reserva
+        delete from tb_Reserva
         where id_reserva = ?    
     `
     let resposta = await con.query(comando, [id]);
